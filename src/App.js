@@ -1,47 +1,80 @@
-import React from 'react'
-import logo from './logo.svg'
-import './App.css'
-import AssistantAPIClient from '@io-maana/q-assistant-client'
-require('dotenv').config()
+import React, { useEffect, useState } from "react";
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import { blue, deepOrange, grey, red } from "@material-ui/core/colors";
 
-console.log(
-  'Your example env. variable { REACT_APP_VAR } is set to: ',
-  process.env.REACT_APP_VAR
-)
+import AssistantAPIClient from "@io-maana/q-assistant-client";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import { ThemeProvider } from "@material-ui/styles";
+import { createBrowserHistory } from "history";
+import { createMuiTheme } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import Main from "./pages/Main";
 
-async function addFunctionNode() {
-  const createFunctionInput = {
-    name: 'assistantGeneratedFunction',
-    arguments: [],
-    outputType: 'STRING',
-    graphqlOperationType: 'QUERY',
-    functionType: 'CKG'
+const history = createBrowserHistory();
+const theme = createMuiTheme({
+  palette: {
+    type: "dark",
+    primary: blue,
+    secondary: deepOrange,
+    error: {
+      light: "#E4AAAA",
+      main: red[500],
+      dark: "#721111",
+      contrastText: grey[50]
+    },
+    text: {
+      primary: grey[50],
+      secondary: grey[200],
+      disabled: grey[500],
+      hint: grey[500]
+    },
+    divider: "rgba(255, 255, 255, 0.12)",
+    action: {
+      active: grey[100],
+      hoverOpacity: 0.21,
+      disabled: grey[700],
+      disabledBackground: grey[500]
+    },
+    background: {
+      default: grey[800],
+      paper: "#515151"
+    }
+  },
+  typography: {
+    fontFamily: "PT Sans, display",
+    htmlFontSize: 16
   }
+});
 
-  const func = await AssistantAPIClient.createFunction(createFunctionInput)
-  const ws = await AssistantAPIClient.getWorkspace()
-  const ag = await ws.getActiveGraph()
-  const node = await ag.addNode('Function', func)
-}
+const App = () => {
+  console.log("App");
+  const [user, setUser] = useState();
+  useEffect(() => {
+    const loadUser = async () => {
+      const qUser = await AssistantAPIClient.getUserInfo();
+      setUser({ ...qUser });
+    };
+    loadUser();
+  }, []);
 
-function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1> Hello, Workspace!</h1>
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <button
-          onClick={() => {
-            addFunctionNode()
-          }}
-        >
-          Add a Function Node!
-        </button>
-      </header>
-    </div>
-  )
-}
+    <ThemeProvider theme={theme}>
+      <React.Fragment>
+        <CssBaseline />
+        <Router history={history}>
+          {user ? (
+            <Switch>
+              <Route path="/" component={() => <Main />} />
+            </Switch>
+          ) : (
+            <Typography color="error" variant="body1">
+              User not found
+            </Typography>
+          )}
+        </Router>
+      </React.Fragment>
+    </ThemeProvider>
+  );
+};
 
-export default App
+export default App;

@@ -1,6 +1,6 @@
 FROM node:10.15.3-alpine AS builder
 
-ENV REACT_APP_VAR='test variable'
+ENV MY_SERVICE_ID="my.service"
 
 WORKDIR /usr/app
 

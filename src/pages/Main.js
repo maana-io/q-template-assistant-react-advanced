@@ -30,8 +30,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Main = props => {
+  const { user } = props;
+
   const classes = useStyles();
   const [workspace, setWorkspace] = useState({ id: null, allKinds: null });
+  const [baseUrl, setBaseUrl] = useState();
+  const [info, setInfo] = useState();
   const [selectedName, setSelectedName] = useState();
   const [loading, setLoading] = useState(false);
   const [isFunction, setIsFunction] = useState(false);
@@ -85,23 +89,15 @@ const Main = props => {
     setLoading(false);
   }, []);
 
-  // const saveCode = async () => {
-  //   await loadWorkspace(true);
+  const getBaseUrl = async () => {
+    const baseUrl = await MyServiceClient.getMyServiceBaseUrl();
+    setBaseUrl(baseUrl);
+  };
 
-  //   const savedLambda = await LambdasClient.createLambda(lambda);
-
-  //   setLambda(async oldLambda => {
-  //     await wireWorkspace(savedLambda);
-  //     await clearCache(workspace);
-  //     setShowSaving(false);
-  //     setShowSaved(true);
-  //     return {
-  //       ...savedLambda
-  //     };
-  //   });
-
-  //   setShowSaving(true);
-  // };
+  const getInfo = async () => {
+    const info = await MyServiceClient.getInfo();
+    setInfo(info);
+  };
 
   useEffect(() => {
     loadWorkspace();
@@ -128,12 +124,15 @@ const Main = props => {
     };
   }, [workspace, updateCurrentFunction, loadWorkspace]);
 
-  console.log("Main", workspace);
   return (
     <div className={classes.root}>
       {loading && <Typography>Loading...</Typography>}
 
-      {!loading && <Typography variant="h6">Hello, Q Assistant!</Typography>}
+      {!loading && (
+        <Typography variant="h6">
+          Hello, {user.name} ({user.email})!
+        </Typography>
+      )}
 
       {selectedName && !loading && (
         <Typography>{isFunction ? "Function" : "Kind"}</Typography>
@@ -141,6 +140,25 @@ const Main = props => {
       {selectedName && !loading && (
         <Typography variant="h6">{selectedName}</Typography>
       )}
+
+      {baseUrl && <Typography>{JSON.stringify(baseUrl, null, 2)}</Typography>}
+
+      <Button
+        onClick={() => {
+          getBaseUrl();
+        }}
+      >
+        Get Base URL
+      </Button>
+      {info && <Typography>{JSON.stringify(info, null, 2)}</Typography>}
+
+      <Button
+        onClick={() => {
+          getInfo();
+        }}
+      >
+        Get Info
+      </Button>
     </div>
   );
 };

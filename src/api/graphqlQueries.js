@@ -7,7 +7,7 @@ const fragments = {
 };
 
 export const GET_INFO = `
-  query getInfo() {
+  query getInfo {
     info {
       ...infoDetail
     }

@@ -47,7 +47,6 @@ const theme = createMuiTheme({
 });
 
 const App = () => {
-  console.log("App");
   const [user, setUser] = useState();
   useEffect(() => {
     const loadUser = async () => {
@@ -64,7 +63,7 @@ const App = () => {
         <Router history={history}>
           {user ? (
             <Switch>
-              <Route path="/" component={() => <Main />} />
+              <Route path="/" component={() => <Main user={user} />} />
             </Switch>
           ) : (
             <Typography color="error" variant="body1">

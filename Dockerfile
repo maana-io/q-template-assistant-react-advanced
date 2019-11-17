@@ -1,21 +1,29 @@
-FROM node:10.15.3-alpine AS builder
+# base image
+FROM node:12.2.0-alpine
 
-ENV MY_SERVICE_ID="my.service"
-
+# set working directory
 WORKDIR /usr/app
 
-COPY package* ./
-COPY src ./src
-COPY public ./public
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH /usr/app/node_modules/.bin:$PATH
 
-RUN npm install
-RUN npm run-script build
+# install and cache app dependencies
+COPY package* /usr/app/
+COPY public /usr/app/public
+COPY src /usr/app/src
+COPY entrypoint.sh /usr/app/
 
-# Build the app for deployment
-FROM nginx:stable
 
-COPY nginx.conf /etc/nginx/nginx.conf
+RUN npm install --silent
+RUN npm install react-scripts@3.0.1 -g --silent
+RUN npm install -g pushstate-server@3.1.0 && \
+  npm cache clear --force
 
-COPY --from=0 /usr/app/build/ /maana/
+RUN npm run build
 
-EXPOSE 3399
+ENV PORT=80 \
+  OTHER_SERVICE_ID='io.maana.catalog' 
+
+
+EXPOSE 80
+CMD [ "sh", "-c", "/usr/app/entrypoint.sh" ]

@@ -1,24 +1,47 @@
 {
-  "name": "maana-q-assistant-template",
+  "name": "assistant_iframe",
   "version": "0.1.0",
-  "homepage": ".",
   "private": true,
+  "homepage": ".",
   "dependencies": {
-    "@io-maana/q-assistant-client": "^3.2.1-beta.14",
-    "@material-ui/core": "^4.6.0",
-    "dotenv": "^8.2.0",
+    "@io-maana/q-assistant-client": "3.2.1-beta.14",
+    "@material-ui/core": "^4.6.1",
+    "@material-ui/icons": "^4.5.1",
+    "@material-ui/styles": "^4.6.0",
+    "apollo-boost": "^0.4.4",
+    "apollo-cache-inmemory": "^1.6.3",
+    "apollo-client": "^2.6.4",
+    "apollo-link": "^1.2.13",
+    "apollo-link-context": "^1.0.19",
+    "apollo-link-http": "^1.5.16",
+    "diff-json": "^2.0.0",
+    "graphql": "^14.5.8",
+    "graphql-tag": "^2.10.1",
+    "history": "^4.10.1",
+    "jiff": "^0.7.3",
+    "local-storage": "^2.0.0",
     "lodash": "^4.17.15",
+    "ls": "^0.2.1",
     "post-robot": "10.0.18",
-    "react": "^16.11.0",
-    "react-dom": "^16.11.0",
+    "react": "^16.12.0",
+    "react-ace": "^8.0.0",
+    "react-dom": "^16.12.0",
+    "react-hotkeys-hook": "^1.5.3",
+    "react-json-view": "^1.19.1",
+    "react-mde": "^7.6.2",
+    "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
-    "serve": "^11.2.0"
+    "react-slick": "^0.25.2",
+    "showdown": "^1.9.1",
+    "slick-carousel": "^1.8.1",
+    "string-hash": "^1.1.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "serve": "npm run build && ./entrypoint.dev.sh",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -35,5 +58,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "serve": "^11.2.0"
   }
 }

@@ -9,6 +9,8 @@ Advanced template for a create-react-app (JavaScript) to be used as a maana Q as
 - Dockerfile
 - nginx conf
 - Build/Run scripts
+- ESLint + Prettier configuration
+- VSCode extension recommendations
 
 ## Default Functionality
 
@@ -17,7 +19,43 @@ Advanced template for a create-react-app (JavaScript) to be used as a maana Q as
 - Tracks the active selection in the workspace
 - Calls a registered Q service
 
-We demonstrate the use of React Hooks to track the state of the workspace and issue asynchronous queries to Q services. Simply replace with your own services and interact with the workspace to fit your needs.
+We demonstrate the use of React Hooks to track the state of the workspace and issue asynchronous queries to Q services. Simply replace these calls with your services and interact with the workspace to fit your needs.
+
+## Development
+
+
+
+### Explanation of Tunneling
+
+To host an assistant locally and view it within Q's Assistant Panel requires that your local machine is viewable to Q's servers; to do this we use [`localtunnel`](https://github.com/localtunnel/localtunnel).
+
+Copy the URL printed to the console when running `npm run start` or `npm run tunnel`; paste it into the Service URL field when creating a new Service in Q.
+
+## NPM Scripts
+
+1. `postinstall`
+    - handles patching `react-scripts` with some small changes to the Webpack configuration to improve the developer experience
+1. `start`
+    - starts all other processes for a single entrypoint for development
+    - runs: `[watch, serve, tunnel]`
+1. `build`
+    - builds a production version of the application; output directory: `./build`
+1. `test`
+    - runs jest tests
+1. `eject`
+    - (CAUTION) ejects from the `create-react-app` framework and toolset
+    - This is only intended for advanced users; use at your own risk.
+    - more information:
+      - Official docs on the topic: https://create-react-app.dev/docs/available-scripts/#npm-run-eject
+      - Alternatives to ejecting: https://medium.com/curated-by-versett/dont-eject-your-create-react-app-b123c5247741
+1. `serve`
+    - runs a local web server to host the compiled files
+1. `tunnel`
+    - opens a tunnel to your local web server
+1. `watch`
+    - starts Webpack in watch mode; writes files to `./build`
+1. `watch:prod`
+    - same as `watch`, but creates a `production` build (minified, optimized, etc.)
 
 ## Development
 

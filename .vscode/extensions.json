@@ -6,6 +6,7 @@
     "recommendations": [
         "CoenraadS.bracket-pair-colorizer",
         "dbaeumer.vscode-eslint",
+        "ms-azuretools.vscode-docker",
         "Prisma.vscode-graphql"
     ],
     // List of extensions recommended by VS Code that should not be recommended for users of this workspace.

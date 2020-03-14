@@ -7,23 +7,21 @@ WORKDIR /usr/app
 # add `/app/node_modules/.bin` to $PATH
 ENV PATH /usr/app/node_modules/.bin:$PATH
 
-# install and cache app dependencies
+# copy package*.json files
 COPY package* /usr/app/
+
+# run npm install first to improve docker layer caching
+# - dependencies are unlikely to change so we install them first before copying src, public, etc.
+RUN npm install --silent
+
+COPY entrypoint.sh /usr/app/
 COPY public /usr/app/public
 COPY src /usr/app/src
-COPY entrypoint.sh /usr/app/
-
-
-RUN npm install --silent
-RUN npm install react-scripts@3.0.1 -g --silent
-RUN npm install -g pushstate-server@3.1.0 && \
-  npm cache clear --force
 
 RUN npm run build
 
 ENV PORT=80 \
   OTHER_SERVICE_ID='io.maana.catalog' 
-
 
 EXPOSE 80
 CMD [ "sh", "-c", "/usr/app/entrypoint.sh" ]

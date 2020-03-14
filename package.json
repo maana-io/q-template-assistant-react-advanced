@@ -3,62 +3,53 @@
   "version": "0.1.0",
   "private": true,
   "homepage": ".",
-  "dependencies": {
-    "@io-maana/q-assistant-client": "3.2.1-beta.14",
-    "@material-ui/core": "^4.6.1",
-    "@material-ui/icons": "^4.5.1",
-    "@material-ui/styles": "^4.6.0",
-    "apollo-boost": "^0.4.4",
-    "apollo-cache-inmemory": "^1.6.3",
-    "apollo-client": "^2.6.4",
-    "apollo-link": "^1.2.13",
-    "apollo-link-context": "^1.0.19",
-    "apollo-link-http": "^1.5.16",
-    "diff-json": "^2.0.0",
-    "graphql": "^14.5.8",
-    "graphql-tag": "^2.10.1",
-    "history": "^4.10.1",
-    "jiff": "^0.7.3",
-    "local-storage": "^2.0.0",
-    "lodash": "^4.17.15",
-    "ls": "^0.2.1",
-    "react": "^16.12.0",
-    "react-ace": "^8.0.0",
-    "react-dom": "^16.12.0",
-    "react-hotkeys-hook": "^1.5.3",
-    "react-json-view": "^1.19.1",
-    "react-mde": "^7.6.2",
-    "react-router": "^5.1.2",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "3.2.0",
-    "react-slick": "^0.25.2",
-    "showdown": "^1.9.1",
-    "slick-carousel": "^1.8.1",
-    "string-hash": "^1.1.3"
-  },
   "scripts": {
-    "start": "react-scripts start",
+    "postinstall": "patch-package",
+    "start": "concurrently -p \"[{name}]\" -n \"JS,SERVE,TUNNEL\" -c \"bgBlue.bold,bgMagenta.bold,bgGreen.bold\" \"npm:watch-js\" \"npm:watch-serve\" \"npm:watch-tunnel\" --kill-others",
+    "start:prod": "NODE_ENV=production npm run start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "serve": "npm run build && ./entrypoint.dev.sh",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "watch-js": "NODE_ENV=${NODE_ENV:=development} webpack --config scripts/webpack.dev.config.js --watch",
+    "watch-serve": "serve -c ./serve.json -s build -l 3000",
+    "watch-tunnel": "lt -h \"http://serverless.social\" -p ${PORT:=3000}"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "dependencies": {
+    "@io-maana/q-assistant-client": "3.2.2-beta.27",
+    "@material-ui/core": "^4.9.5",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/styles": "^4.9.0",
+    "copy-webpack-plugin": "^5.1.1",
+    "graphql": "^14.6.0",
+    "graphql-tag": "^2.10.3",
+    "history": "^4.10.1",
+    "local-storage": "^2.0.0",
+    "lodash": "^4.17.15",
+    "patch-package": "^6.2.1",
+    "pushstate-server": "^3.1.0",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "react-hotkeys-hook": "^1.6.0",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.4.0",
+    "string-hash": "^1.1.3",
+    "webpack-cli": "^3.3.11"
   },
   "devDependencies": {
-    "serve": "^11.2.0"
-  }
+    "concurrently": "^5.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react-hooks": "^2.5.0",
+    "localtunnel": "^2.0.0",
+    "prettier": "^1.19.1",
+    "serve": "^11.3.0"
+  },
+  "browserslist": [
+    "last 2 chrome version",
+    "last 2 firefox version",
+    "last 2 safari version",
+    "last 2 edge version"
+  ]
 }
